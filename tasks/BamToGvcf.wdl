@@ -6,9 +6,9 @@ version 1.0
 #import "Utilities.wdl" as Utils
 
 # Git URL Import
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/GermlineVariantDiscovery.wdl" as Calling
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/GermlineVariantDiscovery.wdl" as Calling
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Utilities.wdl" as Utils
 
 workflow BamToGvcf {
 
@@ -19,6 +19,7 @@ workflow BamToGvcf {
     Int break_bands_at_multiples_of
     Float? contamination
     File input_bam
+    File input_bam_index
     File ref_fasta
     File ref_fasta_index
     File ref_dict
@@ -51,6 +52,7 @@ workflow BamToGvcf {
       input:
         contamination = contamination,
         input_bam = input_bam,
+        input_bam_index = input_bam_index,
         interval_list = ScatterIntervalList.out[index],
         vcf_basename = base_file_name,
         ref_dict = ref_dict,

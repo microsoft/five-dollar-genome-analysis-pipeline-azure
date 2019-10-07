@@ -25,12 +25,12 @@ version 1.0
 #import "../structs/GermlineStructs.wdl" as Structs
 
 # Git URL Import
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/SplitLargeReadGroup.wdl" as SplitRG
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/structs/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/SplitLargeReadGroup.wdl" as SplitRG
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/structs/GermlineStructs.wdl" as Structs
 
 # WORKFLOW DEFINITION
 workflow UnmappedBamToAlignedBam {
@@ -200,6 +200,7 @@ workflow UnmappedBamToAlignedBam {
     call Processing.BaseRecalibrator as BaseRecalibrator {
       input:
         input_bam = SortSampleBam.output_bam,
+        input_bam_index = SortSampleBam.output_bam_index,
         recalibration_report_filename = sample_and_unmapped_bams.base_file_name + ".recal_data.csv",
         sequence_group_interval = subgroup,
         dbsnp_vcf = references.dbsnp_vcf,
@@ -228,6 +229,7 @@ workflow UnmappedBamToAlignedBam {
     call Processing.ApplyBQSR as ApplyBQSR {
       input:
         input_bam = SortSampleBam.output_bam,
+        input_bam_index = SortSampleBam.output_bam_index,
         output_bam_basename = recalibrated_bam_basename,
         recalibration_report = GatherBqsrReports.output_bqsr_report,
         sequence_group_interval = subgroup,

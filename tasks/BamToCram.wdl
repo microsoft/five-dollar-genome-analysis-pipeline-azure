@@ -5,8 +5,8 @@ version 1.0
 #import "Qc.wdl" as QC
 
 # Git URL Import
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/gatk-workflows/five-dollar-genome-analysis-pipeline/1.1.0/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Qc.wdl" as QC
 
 workflow BamToCram {
 
@@ -22,7 +22,7 @@ workflow BamToCram {
   }
 
 
-  # ValidateSamFile runs out of memory in mate validation on crazy edge case data, so we want to skip the mate validation
+  # ValidateSamFile runs out of memory in mate validation on edge case data, so we want to skip the mate validation
   # in those cases.  These values set the thresholds for what is considered outside the normal realm of "reasonable" data.
   Float max_duplication_in_reasonable_sample = 0.30
   Float max_chimerism_in_reasonable_sample = 0.15

@@ -41,10 +41,10 @@ task SortSam {
   }
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
     cpu: "1"
     memory: "5000 MiB"
-    preemptible: preemptible_tries
+    maxRetries: preemptible_tries
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
@@ -80,11 +80,11 @@ task SortSamSpark {
   }
   runtime {
     docker: gatk_docker
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
     bootDiskSizeGb: "15"
     cpu: "16"
     memory: "102 GiB"
-    preemptible: preemptible_tries
+    maxRetries: preemptible_tries
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
@@ -132,9 +132,9 @@ task MarkDuplicates {
   }
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: preemptible_tries
     memory: "7 GiB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
@@ -146,6 +146,7 @@ task MarkDuplicates {
 task BaseRecalibrator {
   input {
     File input_bam
+    File input_bam_index
     String recalibration_report_filename
     Array[String] sequence_group_interval
     File dbsnp_vcf
@@ -162,7 +163,7 @@ task BaseRecalibrator {
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB") + size(ref_dict, "GiB")
   Float dbsnp_size = size(dbsnp_vcf, "GiB")
-  Int disk_size = ceil((size(input_bam, "GiB") / bqsr_scatter) + ref_size + dbsnp_size) + 20
+  Int disk_size = ceil(size(input_bam, "GiB") + size(input_bam_index, "GiB") + ref_size + dbsnp_size) + 20
 
   parameter_meta {
     input_bam: {
@@ -185,9 +186,9 @@ task BaseRecalibrator {
   }
   runtime {
     docker: gatk_docker
-    preemptible: preemptible_tries
     memory: "6 GiB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File recalibration_report = "~{recalibration_report_filename}"
@@ -198,6 +199,7 @@ task BaseRecalibrator {
 task ApplyBQSR {
   input {
     File input_bam
+    File input_bam_index
     String output_bam_basename
     File recalibration_report
     Array[String] sequence_group_interval
@@ -211,7 +213,8 @@ task ApplyBQSR {
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB") + size(ref_dict, "GiB")
-  Int disk_size = ceil((size(input_bam, "GiB") * 3 / bqsr_scatter) + ref_size) + 20
+  Int disk_size = ceil(size(input_bam, "GiB") * 3 + size(input_bam_index, "GiB") * 3 + ref_size) + 20
+
 
   parameter_meta {
     input_bam: {
@@ -238,9 +241,9 @@ task ApplyBQSR {
   }
   runtime {
     docker: gatk_docker
-    preemptible: preemptible_tries
     memory: "3500 MiB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File recalibrated_bam = "~{output_bam_basename}.bam"
@@ -265,9 +268,9 @@ task GatherBqsrReports {
     }
   runtime {
     docker: gatk_docker
-    preemptible: preemptible_tries
     memory: "3500 MiB"
-    disks: "local-disk 20 HDD"
+    disk: "20 GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_bqsr_report = "~{output_report_filename}"
@@ -297,9 +300,9 @@ task GatherSortedBamFiles {
     }
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: preemptible_tries
     memory: "3 GiB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
@@ -332,9 +335,9 @@ task GatherUnsortedBamFiles {
     }
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: preemptible_tries
     memory: "3 GiB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
@@ -410,10 +413,10 @@ task CheckContamination {
     CODE
   >>>
   runtime {
-    preemptible: preemptible_tries
     memory: "2 GiB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
     docker: "us.gcr.io/broad-gotc-prod/verify-bam-id:c8a66425c312e5f8be46ab0c41f8d7a1942b6e16-1500298351"
+    maxRetries: preemptible_tries
   }
   output {
     File selfSM = "~{output_prefix}.selfSM"

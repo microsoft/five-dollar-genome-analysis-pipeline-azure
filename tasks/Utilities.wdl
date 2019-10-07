@@ -60,9 +60,9 @@ task CreateSequenceGroupingTSV {
     CODE
   >>>
   runtime {
-    preemptible: preemptible_tries
     docker: "python:2.7"
     memory: "2 GB"
+    maxRetries: preemptible_tries
   }
   output {
     Array[Array[String]] sequence_grouping = read_tsv("sequence_grouping.txt")
@@ -145,10 +145,10 @@ task ConvertToCram {
   >>>
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: preemptible_tries
     memory: "3 GB"
     cpu: "1"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_cram = "~{output_basename}.cram"
@@ -176,10 +176,10 @@ task ConvertToBam {
   >>>
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: 3
     memory: "3 GB"
     cpu: "1"
-    disks: "local-disk 200 HDD"
+    disk: "200 GB"
+    maxRetries: 3
   }
   output {
     File output_bam = "~{output_basename}.bam"
@@ -202,6 +202,6 @@ task SumFloats {
   }
   runtime {
     docker: "python:2.7"
-    preemptible: preemptible_tries
+    maxRetries: preemptible_tries
   }
 }

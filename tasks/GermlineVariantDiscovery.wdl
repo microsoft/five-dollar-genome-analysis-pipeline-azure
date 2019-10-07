@@ -18,6 +18,7 @@ version 1.0
 task HaplotypeCaller_GATK35_GVCF {
   input {
     File input_bam
+    File input_bam_index
     File interval_list
     String gvcf_basename
     File ref_dict
@@ -29,7 +30,7 @@ task HaplotypeCaller_GATK35_GVCF {
   }
 
   Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB")
-  Int disk_size = ceil(((size(input_bam, "GB") + 30) / hc_scatter) + ref_size) + 20
+  Int disk_size = ceil(size(input_bam, "GB") + 30 + size(input_bam_index, "GB")+ ref_size) + 20
 
   parameter_meta {
     input_bam: {
@@ -66,10 +67,10 @@ task HaplotypeCaller_GATK35_GVCF {
   }
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: preemptible_tries
     memory: "10 GB"
     cpu: "1"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_gvcf = "~{gvcf_basename}.vcf.gz"
@@ -80,6 +81,7 @@ task HaplotypeCaller_GATK35_GVCF {
 task HaplotypeCaller_GATK4_VCF {
   input {
     File input_bam
+    File input_bam_index
     File interval_list
     String vcf_basename
     File ref_dict
@@ -93,7 +95,8 @@ task HaplotypeCaller_GATK4_VCF {
   }
 
   Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB")
-  Int disk_size = ceil(((size(input_bam, "GB") + 30) / hc_scatter) + ref_size) + 20
+  Int disk_size = ceil(size(input_bam, "GB") + 30 + size(input_bam_index, "GB")+ ref_size) + 20
+
 
   parameter_meta {
     input_bam: {
@@ -117,10 +120,10 @@ task HaplotypeCaller_GATK4_VCF {
   >>>
   runtime {
     docker: gatk_docker
-    preemptible: preemptible_tries
     memory: "6.5 GB"
     cpu: "1"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_vcf = "~{vcf_basename}.g.vcf.gz"
@@ -149,9 +152,9 @@ task MergeVCFs {
   }
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.1-1540490856"
-    preemptible: preemptible_tries
     memory: "3 GB"
-    disks: "local-disk ~{disk_size} HDD"
+    disk: "~{disk_size} GB"
+    maxRetries: preemptible_tries
   }
   output {
     File output_vcf = "~{output_vcf_name}"
@@ -187,8 +190,8 @@ task HardFilterVcf {
     }
   runtime {
     docker: gatk_docker
-    preemptible: preemptible_tries
     memory: "3 GB"
-    disks: "local-disk " + disk_size + " HDD"
+    disk: disk_size + " GB"
+    maxRetries: preemptible_tries
   }
 }
