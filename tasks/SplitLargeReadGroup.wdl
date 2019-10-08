@@ -22,10 +22,10 @@ version 1.0
 #import "../structs/GermlineStructs.wdl" as Structs
 
 # Git URL Import
-import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/structs/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/structs/GermlineStructs.wdl" as Structs
 
 workflow SplitLargeReadGroup {
   input {

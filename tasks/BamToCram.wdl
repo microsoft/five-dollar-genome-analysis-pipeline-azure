@@ -5,8 +5,8 @@ version 1.0
 #import "Qc.wdl" as QC
 
 # Git URL Import
-import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/1.1.0/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/tasks/Qc.wdl" as QC
 
 workflow BamToCram {
 
