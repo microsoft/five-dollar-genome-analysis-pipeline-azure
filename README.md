@@ -1,4 +1,21 @@
-# five-dollar-genome-analysis-pipeline
+# Cromwell on Azure example workflow
+This repository is an example of running the germline alignment and variant calling pipeline, based on [Best Practices Genome Analysis Pipeline by Broad Institute of MIT and Harvard](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11165), on Cromwell on Azure.<br/> 
+
+Learn more about using Azure for your Cromwell WDL workflows on our GitHub repo! - [Cromwell on Azure](https://github.com/microsoft/CromwellOnAzure).<br/>
+
+This repository is a fork from [the original](https://github.com/gatk-workflows/five-dollar-genome-analysis-pipeline) and has all the required changes to run the WDL workflow on Cromwell on Azure.<br/>
+
+Here, you can find the WDL file (ready to use) and an example inputs JSON file with links to data hosted on a public Azure Storage account. Currently, you must copy any input data to your own input storage account. In the upcoming 1.0.0 production release for Cromwell on Azure, you will be able to use the "msgenpublicdata" storage account directly as a relative path, like in the inputs JSON file. Until then, you can use [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs#copy-a-container-to-another-storage-account) to transfer the entire blob container with the required files to your own Storage account [using a shared access signature](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview) with "Write" access.<br/>
+
+```
+.\azcopy.exe copy 'https://msgenpublicdata.blob.core.windows.net:443/inputs?sv=2015-04-05&sr=c&si=coa&sig=pENt%2FMMOj24uoNBZIPLa%2BNVVkvopcFK51rwADyYLEPE%3D' 'https://<destination-storage-account-name>.blob.core.windows.net/inputs?<WriteSAS-token>' --recursive --s2s-preserve-access-tier=false
+```
+
+Replace all instances of `/msgenpublicdata/inputs/` with your `/destination-storage-account-name/inputs/` in the inputs JSON file.
+
+The `WholeGenomeGermlineSingleSample.hg38.json` trigger file is an example. Substitute the "WorkflowInputsUrl" with the http link to your inputs JSON file hosted on your Storage account. See more instructions on how to run a workflow on Cromwell on Azure [here](https://github.com/microsoft/CromwellOnAzure/blob/master/docs/germline-alignment-variantcalling-azure.md).
+
+## five-dollar-genome-analysis-pipeline
 Workflows used for germline short variant discovery in WGS data
 
 ### germline_single_sample_workflow :
@@ -10,10 +27,10 @@ Indel discovery in human whole-genome sequencing data.
 - Human whole-genome paired-end sequencing data in unmapped BAM (uBAM) format
 - One or more read groups, one per uBAM file, all belonging to a single sample (SM)
 - Input uBAM files must additionally comply with the following requirements:
-- - filenames all have the same suffix (we use ".unmapped.bam")
-- - files must pass validation by ValidateSamFile
-- - reads are provided in query-sorted order
-- - all reads must have an RG tag
+    * filenames all have the same suffix (we use ".unmapped.bam")
+    * files must pass validation by ValidateSamFile
+    * reads are provided in query-sorted order
+    * all reads must have an RG tag
 - Reference genome must be Hg38 with ALT contigs
 
 #### Outputs 
@@ -33,11 +50,6 @@ Indel discovery in human whole-genome sequencing data.
 
 ### Important Note :
 - The provided JSON is meant to be a ready to use example JSON template of the workflow. It is the user’s responsibility to correctly set the reference and resource input variables using the [GATK Tool and Tutorial Documentations](https://software.broadinstitute.org/gatk/documentation/).
-- Relevant reference and resources bundles can be accessed in [Resource Bundle](https://software.broadinstitute.org/gatk/download/bundle).
-- Runtime parameters are optimized for Broad's Google Cloud Platform implementation.
-- For help running workflows on the Google Cloud Platform or locally please
-view the following tutorial [(How to) Execute Workflows from the gatk-workflows Git Organization](https://software.broadinstitute.org/gatk/documentation/article?id=12521).
-- The following material is provided by the GATK Team. Please post any questions or concerns to one of our forum sites : [GATK](https://gatkforums.broadinstitute.org/gatk/categories/ask-the-team/) , [FireCloud](https://gatkforums.broadinstitute.org/firecloud/categories/ask-the-firecloud-team) or [Terra](https://broadinstitute.zendesk.com/hc/en-us/community/topics/360000500432-General-Discussion) , [WDL/Cromwell](https://gatkforums.broadinstitute.org/wdl/categories/ask-the-wdl-team).
 - Please visit the [User Guide](https://software.broadinstitute.org/gatk/documentation/) site for further documentation on our workflows and tools.
 
 ### LICENSING :
