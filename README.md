@@ -5,7 +5,12 @@ Learn more about using Azure for your Cromwell WDL workflows on our GitHub repo!
 
 This repository is a fork from [the original](https://github.com/gatk-workflows/five-dollar-genome-analysis-pipeline) and has all the required changes to run the WDL workflow on Cromwell on Azure.<br/>
 
-Here, you can find the WDL file (ready to use) and an example inputs JSON file with links to data hosted on a public Azure Storage account. Currently, you must copy any input data to your own input storage account. In the upcoming 1.0.0 production release for Cromwell on Azure, you will be able to use the "msgenpublicdata" storage account directly as a relative path, like in the inputs JSON file. Until then, you can use [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs#copy-a-container-to-another-storage-account) to transfer the entire blob container with the required files to your own Storage account [using a shared access signature](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview) with "Write" access.<br/>
+Here, you can find the WDL file and an example inputs JSON file with links to data hosted on a public Azure Storage account. You can use the "msgenpublicdata" storage account directly as a relative path, like in the inputs JSON file. 
+
+The `WholeGenomeGermlineSingleSample.hg38.json` trigger file is ready to use. Learn more about how to run the workflow on Cromwell on Azure [here](https://github.com/microsoft/CromwellOnAzure/blob/master/docs/germline-alignment-variantcalling-azure.md).
+
+### Host tutorial data on your Storage account
+If you prefer to host this data on your own Storage account, you can use [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs#copy-a-container-to-another-storage-account) to transfer the entire blob container with the required files to your own Storage account [using a shared access signature](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview) with "Write" access.<br/>
 
 ```
 .\azcopy.exe copy 'https://msgenpublicdata.blob.core.windows.net:443/inputs?sv=2015-04-05&sr=c&si=coa&sig=pENt%2FMMOj24uoNBZIPLa%2BNVVkvopcFK51rwADyYLEPE%3D' 'https://<destination-storage-account-name>.blob.core.windows.net/inputs?<WriteSAS-token>' --recursive --s2s-preserve-access-tier=false
@@ -13,7 +18,7 @@ Here, you can find the WDL file (ready to use) and an example inputs JSON file w
 
 Replace all instances of `/msgenpublicdata/inputs/` with your `/destination-storage-account-name/inputs/` in the inputs JSON file.
 
-The `WholeGenomeGermlineSingleSample.hg38.json` trigger file is an example. Substitute the "WorkflowInputsUrl" with the http link to your inputs JSON file hosted on your Storage account. See more instructions on how to run a workflow on Cromwell on Azure [here](https://github.com/microsoft/CromwellOnAzure/blob/master/docs/germline-alignment-variantcalling-azure.md).
+The `WholeGenomeGermlineSingleSample.hg38.json` trigger file is an example. Substitute the "WorkflowInputsUrl" with the http link to your inputs JSON file hosted on your Storage account.
 
 ## five-dollar-genome-analysis-pipeline
 Workflows used for germline short variant discovery in WGS data
