@@ -1,4 +1,4 @@
-# Cromwell on Azure example workflow
+# Germline alignment and variant calling pipeline on Azure
 This repository is an example of running the germline alignment and variant calling pipeline, based on [Best Practices Genome Analysis Pipeline by Broad Institute of MIT and Harvard](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11165), on Cromwell on Azure.<br/> 
 
 Learn more about using Azure for your Cromwell WDL workflows on our GitHub repo! - [Cromwell on Azure](https://github.com/microsoft/CromwellOnAzure).<br/>
