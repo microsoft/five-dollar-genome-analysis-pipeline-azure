@@ -18,7 +18,7 @@
     "contamination_sites_bed": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.contam.bed",
     "contamination_sites_mu": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.contam.mu",
     "calling_interval_list": "/msgenpublicdata/inputs/broad-references/hg38/v0/wgs_calling_regions.hg38.interval_list",
-    "haplotype_scatter_count": 10,
+    "haplotype_scatter_count": 50,
     "break_bands_at_multiples_of": 100000,
     "reference_fasta" : {
         "ref_dict": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.dict",
