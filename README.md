@@ -7,7 +7,7 @@ This repository is a fork from [the original](https://github.com/gatk-workflows/
 
 Here, you can find the WDL file and an example inputs JSON file with links to data hosted on a public Azure Storage account. You can use the "msgenpublicdata" storage account directly as a relative path, like in the inputs JSON file. 
 
-The `WholeGenomeGermlineSingleSample.hg38.trigger.json` trigger file is ready to use. Learn more about how to run the workflow on Cromwell on Azure [here](https://github.com/microsoft/CromwellOnAzure/blob/master/docs/germline-alignment-variantcalling-azure.md).
+The `WholeGenomeGermlineSingleSample.hg38.trigger.json` trigger file is ready to use.
 
 ### Host tutorial data on your Storage account
 If you prefer to host this data on your own Storage account, you can use [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs#copy-a-container-to-another-storage-account) to transfer the entire blob container with the required files to your own Storage account [using a shared access signature](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview) with "Write" access.<br/>
