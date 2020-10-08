@@ -120,8 +120,8 @@ task HaplotypeCaller_GATK4_VCF {
   >>>
   runtime {
     docker: gatk_docker
-    memory: "6.5 GB"
-    cpu: "1"
+    memory: "8 GB"
+    cpu: "4"
     disk: disk_size + " GB"
     maxRetries: preemptible_tries
   }
